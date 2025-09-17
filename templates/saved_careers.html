@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-success mb-4">⭐ My Saved Careers</h2>
+
+    {% if careers %}
+        <div class="row">
+            {% for career in careers %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">
+                            {{ career[1] }}  <!-- Title -->
+                        </h4>
+                        <p><b>Description:</b> {{ career[2] }}</p>
+                        <p><b>Skills Required:</b> {{ career[3] }}</p>
+                        <p>
+                            <b>Demand Level:</b> 
+                            <span class="badge 
+                                {% if career[4] == 'High' %} bg-success
+                                {% elif career[4] == 'Medium' %} bg-warning text-dark
+                                {% else %} bg-danger
+                                {% endif %}">
+                                {{ career[4] }}
+                            </span>
+                        </p>
+                        <p><b>Salary:</b> {{ career[5] }}</p>
+
+                        <!-- Remove Career -->
+                        <a href="{{ url_for('career.remove_career', career_id=career[0]) }}" 
+                           class="btn btn-outline-danger btn-sm mt-2">🗑 Remove</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-muted">No saved careers yet. ⭐ Save some from Career Suggestions.</p>
+    {% endif %}
+</div>
+{% endblock %}

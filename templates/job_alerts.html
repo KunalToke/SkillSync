@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="job-alerts-container">
+    <h2>🔥 Latest Job Alerts</h2>
+    <p>Over 100+ fresh job opportunities curated for you!</p>
+
+    <div class="job-list">
+        {% for job in jobs %}
+            <div class="job-card">
+                <h3>{{ job.title }}</h3>
+                <p><strong>Company:</strong> {{ job.company }}</p>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Type:</strong> {{ job.type }}</p>
+                <p><strong>Posted:</strong> {{ job.posted }}</p>
+                <a href="{{ job.apply_link }}" class="apply-btn" target="_blank">Apply Now</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.job-alerts-container { padding: 20px; }
+.job-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.job-card { background: #fff; border-radius: 10px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; }
+.job-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
+.apply-btn { display: inline-block; margin-top: 10px; padding: 8px 12px; background: #007bff; color: #fff; border-radius: 6px; text-decoration: none; }
+.apply-btn:hover { background: #0056b3; }
+</style>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Job Seeker Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+  <h1 class="fw-bold text-primary mb-4">Welcome, {{ username }}!</h1>
+  <p class="lead text-muted">
+    Here you can build your resume, search jobs, get career suggestions, develop skills, and prepare for interviews.
+  </p>
+
+  <div class="row g-4 mt-4">
+
+    <!-- Resume Builder -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-file-alt fa-2x text-primary mb-3"></i>
+          <h5 class="fw-bold">Resume Builder</h5>
+          <p>Create and manage your resumes easily.</p>
+          <a href="{{ url_for('resume.resume') }}" class="btn btn-primary btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Search -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-magnifying-glass fa-2x text-success mb-3"></i>
+          <h5 class="fw-bold">Job Search</h5>
+          <p>Find jobs that match your profile instantly.</p>
+          <a href="{{ url_for('matching.match_jobs') }}" class="btn btn-success btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Career Suggestions -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-lightbulb fa-2x text-warning mb-3"></i>
+          <h5 class="fw-bold">Career Suggestions</h5>
+          <p>AI-powered career guidance and recommendations.</p>
+          <a href="{{ url_for('career.career_suggestions') }}" class="btn btn-warning btn-sm text-white">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill Development -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-chalkboard-teacher fa-2x text-info mb-3"></i>
+          <h5 class="fw-bold">Skill Development</h5>
+          <p>Enhance your skills to get better job opportunities.</p>
+          <a href="{{ url_for('skills.skills') }}" class="btn btn-info btn-sm text-white">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interview Prep -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-comments fa-2x text-secondary mb-3"></i>
+          <h5 class="fw-bold">Interview Prep</h5>
+          <p>Prepare for interviews with tips and mock questions.</p>
+          <a href="{{ url_for('interview.interview_prep') }}" class="btn btn-secondary btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Alerts -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-bell fa-2x text-danger mb-3"></i>
+          <h5 class="fw-bold">Job Alerts</h5>
+          <p>Stay updated with the latest job postings.</p>
+          <a href="{{ url_for('alerts.alerts') }}" class="btn btn-danger btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

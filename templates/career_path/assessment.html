@@ -1,0 +1,23 @@
+<!-- career_path/assessment.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Career Path Assessment</h2>
+  <form method="POST">
+    {% for i in range(1, 11) %}
+      <div class="mb-3">
+        <label class="form-label">Question {{ i }}: Sample question text {{ i }}</label>
+        <select class="form-select" name="q{{ i }}" required>
+          <option value="">Select</option>
+          <option value="coding">Coding / Tech</option>
+          <option value="design">Design / Creativity</option>
+          <option value="business">Business / Management</option>
+          <option value="research">Research / Analysis</option>
+          <option value="teaching">Teaching / Mentorship</option>
+        </select>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary w-100">Submit & Get Recommendations</button>
+  </form>
+</div>
+{% endblock %}

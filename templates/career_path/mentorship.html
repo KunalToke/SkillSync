@@ -1,0 +1,21 @@
+<!-- career_path/mentorship.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Find a Mentor</h2>
+  <div class="row">
+    {% for mentor in mentors %}
+    <div class="col-md-4">
+      <div class="card shadow mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ mentor.name }}</h5>
+          <p class="card-text"><b>Field:</b> {{ mentor.field }}</p>
+          <p><b>Contact:</b> {{ mentor.contact }}</p>
+          <a href="mailto:{{ mentor.contact }}" class="btn btn-outline-primary">Contact Mentor</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

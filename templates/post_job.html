@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Post Job</h2>
+{% if message %}
+<p style="color:green;">{{ message }}</p>
+{% endif %}
+<form method="POST">
+    Job Title: <input type="text" name="title" required><br>
+    Skills Required: <input type="text" name="skills" required><br>
+    Location: <input type="text" name="location"><br>
+    Salary: <input type="text" name="salary"><br>
+    <button type="submit">Post Job</button>
+</form>
+
+<h3>Posted Jobs:</h3>
+<ul>
+    {% for job in jobs %}
+    <li>{{ job.title }} - Skills: {{ job.skills }} - Location: {{ job.location }} - Salary: {{ job.salary }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

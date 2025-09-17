@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">💡 Career Suggestions</h2>
+
+    <!-- Search & Filter Form (Centered) -->
+    <div class="d-flex justify-content-center mb-4">
+        <form method="GET" action="{{ url_for('career.career_suggestions') }}" class="row g-2 justify-content-center w-75">
+
+            <!-- Keyword Search -->
+            <div class="col-md-3">
+                <input type="text" name="keyword" class="form-control"
+                       placeholder="Search careers..." value="{{ request.args.get('keyword', '') }}">
+            </div>
+
+            <!-- Demand Filter -->
+            <div class="col-md-2">
+                <select name="demand" class="form-select">
+                    <option value="">All Demand Levels</option>
+                    <option value="High" {% if request.args.get('demand') == "High" %}selected{% endif %}>High</option>
+                    <option value="Medium" {% if request.args.get('demand') == "Medium" %}selected{% endif %}>Medium</option>
+                    <option value="Low" {% if request.args.get('demand') == "Low" %}selected{% endif %}>Low</option>
+                </select>
+            </div>
+
+            <!-- Salary Filter -->
+            <div class="col-md-2">
+                <select name="salary" class="form-select">
+                    <option value="">All Salaries</option>
+                    <option value="70000" {% if request.args.get('salary') == "70000" %}selected{% endif %}>$70k+</option>
+                    <option value="90000" {% if request.args.get('salary') == "90000" %}selected{% endif %}>$90k+</option>
+                    <option value="120000" {% if request.args.get('salary') == "120000" %}selected{% endif %}>$120k+</option>
+                </select>
+            </div>
+
+            <!-- Sorting -->
+            <div class="col-md-2">
+                <select name="sort" class="form-select">
+                    <option value="">Sort by Salary</option>
+                    <option value="asc" {% if request.args.get('sort') == "asc" %}selected{% endif %}>Low → High</option>
+                    <option value="desc" {% if request.args.get('sort') == "desc" %}selected{% endif %}>High → Low</option>
+                </select>
+            </div>
+
+            <!-- Submit -->
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100">Apply</button>
+            </div>
+        </form>
+    </div>
+
+    {% if careers %}
+        <div class="row">
+            {% for career in careers %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">
+                            {{ career.title }}
+                            <span class="badge 
+                                {% if career.growth == 'High' %} bg-success
+                                {% elif career.growth == 'Medium' %} bg-warning text-dark
+                                {% else %} bg-danger
+                                {% endif %}
+                                ms-2">
+                                {{ career.growth }} Demand
+                            </span>
+                        </h4>
+                        <p><b>Skills Required:</b> {{ career.skills }}</p>
+                        <p><b>Average Salary:</b> {{ career.salary }}</p>
+                        <p>{{ career.description }}</p>
+
+                        <!-- Save Career -->
+                        <a href="{{ url_for('career.save_career', career_id=career.id) }}"
+                           class="btn btn-outline-primary btn-sm">⭐ Save Career</a>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-muted">No careers found. Try different filters.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white">
+      Resume Shortlisting Result
+    </div>
+    <div class="card-body">
+      <p><b>File:</b> {{ filename }}</p>
+      <p><b>AI Shortlist Score:</b> {{ score }}%</p>
+      <p><b>Role:</b> {{ role }}</p>
+      <p><b>Skills:</b> {{ skills }}</p>
+      <p><b>Status:</b> {{ status }}</p>
+      <a href="{{ url_for('talent_seekers.automation') }}" class="btn btn-secondary">Back</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

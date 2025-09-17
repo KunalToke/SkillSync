@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Seeker Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 30px;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .chat-bubble {
+      padding: 12px 16px;
+      border-radius: 20px;
+      margin: 8px 0;
+      max-width: 80%;
+    }
+    .bot {
+      background: #e3f2fd;
+      align-self: flex-start;
+    }
+    .user {
+      background: #c8e6c9;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #1976d2;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    .input-area {
+      display: flex;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>Career Chatbot</h2>
+    <div id="chat" class="chat-area"></div>
+    <div class="input-area">
+      <input type="text" id="answerInput" placeholder="Type your answer...">
+      <button onclick="sendAnswer()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("answerInput");
+
+    const questions = [
+      "👋 Hi! What job role are you interested in?",
+      "Great! What are your top 3 technical skills?",
+      "Nice. What salary range are you expecting?",
+      "Would you be open to relocation? (Yes/No)",
+      "Any preferred work mode? (Remote/Hybrid/On-site)",
+      "Thanks! Anything else you'd like to highlight?"
+    ];
+
+    let currentQuestion = 0;
+
+    function addMessage(text, sender) {
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble " + sender;
+      bubble.innerText = text;
+      chat.appendChild(bubble);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function sendAnswer() {
+      const answer = input.value.trim();
+      if (!answer) return;
+
+      // Show user answer
+      addMessage(answer, "user");
+      input.value = "";
+
+      // Save to backend
+      await fetch("{{ url_for('job_seekers.chatbot_answer') }}", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({answer: answer})
+      });
+
+      // Next question
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        setTimeout(() => addMessage(questions[currentQuestion], "bot"), 500);
+      } else {
+        setTimeout(() => {
+          addMessage("✅ Thanks for your answers! They’ll be shared with recruiters.", "bot");
+        }, 500);
+      }
+    }
+
+    // start
+    window.onload = () => {
+      addMessage(questions[currentQuestion], "bot");
+    };
+  </script>
+</body>
+</html>

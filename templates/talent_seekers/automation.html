@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Automation{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="fas fa-robot text-primary"></i> Automation Tools</h2>
+    <a href="{{ url_for('talent_seekers.dashboard') }}" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-left"></i> Dashboard
+    </a>
+  </div>
+
+  <div class="row g-4">
+    <!-- Resume Shortlister -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fas fa-file-upload text-success"></i> AI Resume Shortlister</h5>
+          <p class="card-text">Upload resumes and get instant shortlisting scores, roles, and skill matches.</p>
+          <form action="{{ url_for('talent_seekers.resume_shortlister') }}" method="POST" enctype="multipart/form-data">
+            <div class="mb-2">
+              <input type="file" name="resume" class="form-control" required>
+            </div>
+            <button class="btn btn-sm btn-primary">Upload & Shortlist</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auto-Ranking Candidates -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fas fa-sort-amount-down text-info"></i> Auto-Ranking Candidates</h5>
+          <p class="card-text">Automatically rank candidates based on AI match score and skill fit.</p>
+          <a href="{{ url_for('talent_seekers.auto_ranking') }}" class="btn btn-sm btn-info">View Ranking</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Removed Chatbot (Job Seekers only) -->
+  </div>
+</div>
+{% endblock %}

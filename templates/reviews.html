@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Ratings & Reviews</h2>
+
+<form method="POST">
+    Review User: <input type="text" name="reviewed_user" required><br>
+    Rating (1-5): <input type="number" name="rating" min="1" max="5" required><br>
+    Comment: <textarea name="comment" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Submit Review</button>
+</form>
+
+<h3>All Reviews:</h3>
+<ul>
+    {% for r in reviews %}
+    <li><strong>{{ r.reviewer }}</strong> reviewed <strong>{{ r.reviewed_user }}</strong> - Rating: {{ r.rating }} - Comment: {{ r.comment }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

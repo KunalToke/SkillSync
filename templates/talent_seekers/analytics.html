@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2><i class="fa-solid fa-chart-line"></i> Recruitment Analytics</h2>
+  <p class="text-muted">Insights into your hiring process.</p>
+  
+  <div class="row mt-3">
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h4>{{ stats.total_jobs }}</h4>
+          <p class="text-muted">Jobs Posted</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h4>{{ stats.total_candidates }}</h4>
+          <p class="text-muted">Candidates</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h4>{{ stats.applications_received }}</h4>
+          <p class="text-muted">Applications</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h4>{{ stats.avg_match_score }}%</h4>
+          <p class="text-muted">Avg. Match Score</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

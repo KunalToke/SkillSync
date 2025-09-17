@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Search Candidates{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="fas fa-users text-primary"></i> Search Candidates</h2>
+  </div>
+
+  <!-- Search & Filters -->
+  <form class="row g-3 mb-4" method="GET" action="{{ url_for('talent_seekers.search_candidates') }}">
+    <div class="col-md-3">
+      <input class="form-control" type="text" name="q" placeholder="Search by name, skills..." value="{{ query }}">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" name="diversity">
+        <option value="">All Diversity</option>
+        {% for tag in diversity_tags %}
+        <option value="{{ tag }}" {% if filter_diversity == tag %}selected{% endif %}>{{ tag }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" name="urgency">
+        <option value="">All Urgency</option>
+        {% for u in urgencies %}
+        <option value="{{ u }}" {% if filter_urgency == u %}selected{% endif %}>{{ u }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" name="skill">
+        <option value="">All Skills</option>
+        {% for s in skills_list %}
+        <option value="{{ s }}" {% if filter_skill == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100" type="submit"><i class="fas fa-search"></i> Filter</button>
+    </div>
+  </form>
+
+  <!-- Candidate Results -->
+  <div class="row g-4">
+    {% for c in candidates %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-lg border-0 h-100">
+        <div class="card-body">
+          <h5 class="fw-bold text-primary">{{ c.name }}</h5>
+          <p><i class="fas fa-user-tie"></i> {{ c.role }}</p>
+          <p><i class="fas fa-briefcase"></i> {{ c.experience }} | <i class="fas fa-map-marker-alt"></i> {{ c.location }}</p>
+          <p><i class="fas fa-robot text-success"></i> AI Match: <span class="fw-bold">{{ c.ai_match }}%</span></p>
+          <p><i class="fas fa-code"></i> <strong>Skills:</strong> {{ c.skills }}</p>
+          <p><i class="fas fa-users"></i> <strong>Soft Skills:</strong> {{ c.soft_skills | join(", ") }}</p>
+          <p class="text-muted"><i class="fas fa-lightbulb"></i> {{ c.ai_highlight }}</p>
+
+          <!-- Portfolio / Links with Icons + Tooltips -->
+          <p class="mt-2">
+            {% if c.github or c.linkedin or c.portfolio %}
+              {% if c.github %}
+                <a href="{{ c.github }}" target="_blank" class="me-2 text-dark" data-bs-toggle="tooltip" title="View GitHub">
+                  <i class="fab fa-github fa-lg"></i>
+                </a>
+              {% endif %}
+              {% if c.linkedin %}
+                <a href="{{ c.linkedin }}" target="_blank" class="me-2 text-primary" data-bs-toggle="tooltip" title="View LinkedIn">
+                  <i class="fab fa-linkedin fa-lg"></i>
+                </a>
+              {% endif %}
+              {% if c.portfolio %}
+                <a href="{{ c.portfolio }}" target="_blank" class="me-2 text-success" data-bs-toggle="tooltip" title="View Portfolio">
+                  <i class="fas fa-globe fa-lg"></i>
+                </a>
+              {% endif %}
+            {% else %}
+              <span class="text-muted"><i class="fas fa-times-circle"></i> No portfolio available</span>
+            {% endif %}
+          </p>
+
+          <p>
+            <i class="fas fa-clock"></i> Availability: {{ c.availability }}
+            <span class="badge {% if c.urgency == 'High' %}bg-danger{% elif c.urgency == 'Medium' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+              {{ c.urgency }} Urgency
+            </span>
+          </p>
+          <p><i class="fas fa-universal-access"></i> Diversity: {{ c.diversity }}</p>
+          <p><i class="fas fa-chart-line"></i> Growth Potential: {{ c.growth_index }}</p>
+          <p><i class="fas fa-user-friends"></i> Recommended by: {{ c.peer_recs | join(", ") }}</p>
+          <p><i class="fas fa-gamepad"></i> Level {{ c.gamified.level }} | Badges: {{ c.gamified.badges | join(", ") }}</p>
+
+          {% if c.video_resume %}
+            <video controls class="w-100 rounded">
+              <source src="{{ url_for('static', filename='uploads/videos/' ~ c.video_resume) }}" type="video/mp4">
+            </video>
+          {% else %}
+            <p class="text-muted"><i class="fas fa-video-slash"></i> No video resume</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p class="text-muted">No candidates found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Enable Bootstrap Tooltips -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  });
+</script>
+{% endblock %}

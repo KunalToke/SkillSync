@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Talent Seeker Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+  <h1 class="fw-bold text-success mb-4">Welcome, {{ username }}!</h1>
+  <p class="lead text-muted">
+    Here you can post jobs, search for candidates, track applications, view hiring insights, and automate processes.
+  </p>
+
+  <div class="row g-4 mt-4">
+
+    <!-- Post Jobs -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-plus-circle fa-2x text-primary mb-3"></i>
+          <h5 class="fw-bold">Post Jobs</h5>
+          <p>Easily create and manage job listings.</p>
+          <a href="{{ url_for('talent_seekers.post_job') }}" class="btn btn-primary btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Candidates -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-users fa-2x text-success mb-3"></i>
+          <h5 class="fw-bold">Search Candidates</h5>
+          <p>Find and shortlist the best candidates.</p>
+          <a href="{{ url_for('talent_seekers.search_candidates') }}" class="btn btn-success btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track Applications -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-file-signature fa-2x text-warning mb-3"></i>
+          <h5 class="fw-bold">Track Applications</h5>
+          <p>Monitor all applications for your job postings.</p>
+          <a href="{{ url_for('talent_seekers.applications') }}" class="btn btn-warning btn-sm text-white">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hiring Insights -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-chart-pie fa-2x text-info mb-3"></i>
+          <h5 class="fw-bold">Hiring Insights</h5>
+          <p>Analyze recruitment trends and metrics.</p>
+          <a href="{{ url_for('talent_seekers.hiring_insights') }}" class="btn btn-info btn-sm text-white">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Automation -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-robot fa-2x text-danger mb-3"></i>
+          <h5 class="fw-bold">Automation</h5>
+          <p>Use AI tools to simplify candidate screening and hiring.</p>
+          <a href="{{ url_for('talent_seekers.automation') }}" class="btn btn-danger btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Overview -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-gauge fa-2x text-secondary mb-3"></i>
+          <h5 class="fw-bold">Dashboard Overview</h5>
+          <p>Return to your main dashboard overview anytime.</p>
+          <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

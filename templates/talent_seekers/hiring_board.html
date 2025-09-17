@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h3>Collaborative Hiring Board</h3>
+  <div class="row">
+    {% for stage in stages %}
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-header">{{ stage }}</div>
+        <div class="card-body">
+          {% for c in candidates[stage] %}
+            <div class="alert alert-info">{{ c }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

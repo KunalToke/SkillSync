@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-info text-white">
+      <i class="fa-solid fa-ranking-star"></i> Auto-Ranked Candidates
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        {% for c in candidates %}
+          <li class="list-group-item">
+            {{ c.candidate }} – Score: <b>{{ c.ai_score }}</b>% ({{ c.skills }})
+          </li>
+        {% endfor %}
+      </ul>
+      <a href="{{ url_for('talent_seekers.automation') }}" class="btn btn-secondary mt-3">
+        ← Back
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

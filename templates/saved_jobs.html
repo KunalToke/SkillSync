@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">💾 Saved Jobs</h2>
+
+    {% if jobs %}
+        <div class="row">
+            {% for job in jobs %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-body">
+                        <h4 class="card-title text-success">{{ job.title }} - {{ job.company }}</h4>
+                        <p><b>Skills:</b> {{ job.skills }}</p>
+                        <p><b>Location:</b> {{ job.location }} | <b>Type:</b> {{ job.type }} | <b>Experience:</b> {{ job.experience }}</p>
+                        <p>{{ job.description }}</p>
+
+                        <!-- Apply Job (moves to Applied Jobs) -->
+                        <a href="{{ url_for('matching.apply_job', job_id=job.id) }}" 
+                           class="btn btn-sm btn-success">🚀 Apply Now</a>
+
+                        <!-- Remove Job -->
+                        <a href="{{ url_for('matching.remove_job', job_id=job.id) }}" 
+                           class="btn btn-sm btn-danger">🗑️ Remove</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-muted">No jobs saved yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

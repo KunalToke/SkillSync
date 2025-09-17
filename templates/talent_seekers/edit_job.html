@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Edit Job{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-warning"><i class="fas fa-edit"></i> Edit Job</h2>
+    <a href="{{ url_for('talent_seekers.post_job') }}" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-left"></i> Back to Jobs
+    </a>
+  </div>
+
+  <!-- Edit Job Form -->
+  <div class="card shadow-lg border-0">
+    <div class="card-body p-4">
+      <form method="POST">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Job Title</label>
+            <input type="text" class="form-control" name="title" value="{{ job['title'] }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Location</label>
+            <input type="text" class="form-control" name="location" value="{{ job['location'] }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Required Skills</label>
+            <input type="text" class="form-control" name="skills" value="{{ job['skills'] }}" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Salary</label>
+            <input type="text" class="form-control" name="salary" value="{{ job['salary'] }}" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Openings</label>
+            <input type="number" min="1" class="form-control" name="openings" value="{{ job['openings'] }}" required>
+          </div>
+        </div>
+        <div class="mt-4 text-end">
+          <button type="submit" class="btn btn-warning px-4">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

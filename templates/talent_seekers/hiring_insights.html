@@ -1,0 +1,205 @@
+{% extends "base.html" %} 
+{% block title %}Hiring Insights{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="fas fa-robot text-primary"></i> AI-Powered Hiring Insights</h2>
+    <a href="{{ url_for('talent_seekers.dashboard') }}" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-left"></i> Dashboard
+    </a>
+  </div>
+
+  <!-- Row 1 -->
+  <div class="row g-4">
+    <!-- QHI -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5>AI-Estimated Quality of Hire Index (QHI)</h5>
+          <p class="display-6 fw-bold text-success">{{ qhi }}%</p>
+          <small class="text-muted">Predicted using weighted AI model: Performance ({{ performance }}), Retention ({{ retention }}), Manager Satisfaction ({{ satisfaction }}).</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offer Acceptance -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-light"><strong>AI Offer Acceptance Probability</strong></div>
+        <div class="card-body">
+          <table class="table table-sm">
+            <thead><tr><th>Role</th><th>AI Prediction</th></tr></thead>
+            <tbody>
+              {% for o in offer_acceptance %}
+              <tr>
+                <td>{{ o.role }}</td>
+                <td>
+                  <div class="progress" style="width:200px;">
+                    <div class="progress-bar {% if o.prob > 80 %}bg-success{% elif o.prob > 70 %}bg-warning{% else %}bg-danger{% endif %}"
+                         style="width:{{ o.prob }}%">
+                      {{ o.prob }}%
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="row g-4 mt-1">
+    <!-- Heatmap -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-light"><strong>Time-to-Hire Heatmap</strong></div>
+        <div class="card-body"><canvas id="heatmapChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Competitor Benchmark -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-light"><strong>Competitor Benchmarking</strong></div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead><tr><th>Company</th><th>Avg Hire Days</th><th>Offer Acceptance</th></tr></thead>
+            <tbody>
+              {% for c in competitor_benchmark %}
+              <tr><td>{{ c.company }}</td><td>{{ c.avg_hire_days }}</td><td>{{ c.offer_acceptance }}%</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="row g-4 mt-1">
+    <!-- Funnel -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-light"><strong>Candidate Drop-off Funnel</strong></div>
+        <div class="card-body"><canvas id="funnelChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Budget -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-light"><strong>Hiring Budget vs. Outcome</strong></div>
+        <div class="card-body">
+          <p>Budget: ${{ budget_vs_outcomes.budget_allocated }} | Spent: ${{ budget_vs_outcomes.spent }}</p>
+          <p><strong>Hires: {{ budget_vs_outcomes.hires }}</strong></p>
+          <div class="progress">
+            <div class="progress-bar bg-info" style="width: {{ (budget_vs_outcomes.spent / budget_vs_outcomes.budget_allocated * 100)|round(2) }}%">
+              {{ (budget_vs_outcomes.spent / budget_vs_outcomes.budget_allocated * 100)|round(2) }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- More Rows (Pipeline, Diversity, Skill Gap, etc.) same as your version -->
+</div>
+
+<!-- Charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Pass Jinja variables into JS
+  const heatmapData = {{ heatmap_data|tojson }};
+  const funnelData = {{ funnel|tojson }};
+  const attritionData = {{ attrition_risk|tojson }};
+  const hiringSources = {{ hiring_sources|tojson }};
+  const skillGap = {{ skill_gap|tojson }};
+
+  // Heatmap
+  new Chart(document.getElementById("heatmapChart"), {
+    type: "bar",
+    data: {
+      labels: ["Q1","Q2","Q3","Q4"],
+      datasets: Object.keys(heatmapData).map((dept, i) => ({
+        label: dept,
+        data: heatmapData[dept],
+        backgroundColor: `rgba(${i*60}, ${120+i*40}, 220, 0.6)`
+      }))
+    },
+    options: { responsive:true, plugins:{ legend:{ position:'bottom'} } }
+  });
+
+  // Funnel
+  new Chart(document.getElementById("funnelChart"), {
+    type: "bar",
+    data: {
+      labels: Object.keys(funnelData),
+      datasets: [{
+        label: "Candidates",
+        data: Object.values(funnelData),
+        backgroundColor: "rgba(255,99,132,0.6)"
+      }]
+    },
+    options: { indexAxis: 'y', plugins:{ legend:{ display:false } } }
+  });
+
+  // Diversity
+  new Chart(document.getElementById("diversityChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Diverse Hires", "Others"],
+      datasets: [{
+        data: [{{ diversity_index }}, {{ 100-diversity_index }}],
+        backgroundColor: ["#4CAF50","#ddd"]
+      }]
+    }
+  });
+
+  // Skill Gap
+  new Chart(document.getElementById("skillGapChart"), {
+    type: "radar",
+    data: {
+      labels: Object.keys(skillGap),
+      datasets: [{
+        label: "Skill Availability",
+        data: Object.values(skillGap),
+        backgroundColor: "rgba(54,162,235,0.2)",
+        borderColor: "rgba(54,162,235,1)"
+      }]
+    }
+  });
+
+  // Attrition Risk
+  new Chart(document.getElementById("attritionChart"), {
+    type: "pie",
+    data: {
+      labels: Object.keys(attritionData),
+      datasets: [{
+        data: Object.values(attritionData),
+        backgroundColor: ["#dc3545","#ffc107","#28a745"]
+      }]
+    }
+  });
+
+  // Sources
+  new Chart(document.getElementById("sourcesChart"), {
+    type: "bar",
+    data: {
+      labels: hiringSources.map(h => h.source),
+      datasets: [{
+        label: "Hires",
+        data: hiringSources.map(h => h.hires),
+        backgroundColor: "rgba(75,192,192,0.6)"
+      }]
+    },
+    options: { responsive:true, plugins:{ legend:{ display:false } } }
+  });
+});
+</script>
+{% endblock %}

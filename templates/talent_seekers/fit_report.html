@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h3>AI Fit Report – {{ candidate }}</h3>
+  {% if report %}
+    <p><b>Match:</b> {{ report.match }}%</p>
+    <p><b>Strengths:</b> {{ report.strengths | join(', ') }}</p>
+    <p><b>Skill Gaps:</b> {{ report.gaps | join(', ') }}</p>
+  {% else %}
+    <p>No report available.</p>
+  {% endif %}
+  <a href="{{ url_for('talent_seekers.dashboard') }}" class="btn btn-secondary">Back</a>
+</div>
+{% endblock %}

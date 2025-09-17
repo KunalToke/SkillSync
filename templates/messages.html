@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Messaging System</h2>
+<form method="POST">
+    Recipient: <input type="text" name="recipient" required><br>
+    Message: <textarea name="content" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Send</button>
+</form>
+
+<h3>Messages:</h3>
+<ul>
+    {% for m in messages %}
+    <li><strong>{{ m.sender }}</strong> to <strong>{{
+<strong>{{ m.recipient }}</strong>: {{ m.content }}</li>
+{% endfor %}
+
+</ul> {% endblock %}

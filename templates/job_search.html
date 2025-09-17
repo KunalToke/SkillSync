@@ -1,0 +1,109 @@
+<!-- templates/career_path/job_search.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">💼 Job Search</h2>
+
+  <!-- Filters -->
+  <div class="row mb-3">
+    <div class="col-md-4"><input id="titleFilter" class="form-control" placeholder="Title"></div>
+    <div class="col-md-4"><input id="companyFilter" class="form-control" placeholder="Company"></div>
+    <div class="col-md-4"><input id="locationFilter" class="form-control" placeholder="Location"></div>
+  </div>
+
+  <div id="jobsContainer" class="row">
+    {% for job in jobs %}
+    <div class="col-md-6 col-lg-4 mb-4 job-card">
+      <div class="card shadow-sm h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="card-title mb-1">{{ job.title }}</h5>
+              <div class="text-muted small">{{ job.company }} • {{ job.location }}</div>
+            </div>
+            <div>
+              <!-- optional type badge -->
+              {% if job.type %}<span class="badge bg-secondary">{{ job.type }}</span>{% endif %}
+            </div>
+          </div>
+
+          {% if job.short_desc %}
+            <p class="mt-3 mb-2">{{ job.short_desc }}</p>
+          {% endif %}
+
+          <div class="mt-auto d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm w-50 save-job-btn" data-title="{{ job.title }}">💾 Save</button>
+
+            <!-- Apply: first send apply POST (non-blocking) then open link -->
+            <a href="{{ job.link }}" target="_blank" rel="noopener noreferrer"
+               class="btn btn-primary btn-sm w-50 apply-job-link"
+               data-title="{{ job.title }}">🚀 Apply</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  // Filters
+  function filterJobs(){
+    const t = document.getElementById('titleFilter').value.toLowerCase();
+    const c = document.getElementById('companyFilter').value.toLowerCase();
+    const l = document.getElementById('locationFilter').value.toLowerCase();
+
+    document.querySelectorAll('.job-card').forEach(card => {
+      const text = card.innerText.toLowerCase();
+      if(text.includes(t) && text.includes(c) && text.includes(l)){
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+  document.getElementById('titleFilter').addEventListener('input', filterJobs);
+  document.getElementById('companyFilter').addEventListener('input', filterJobs);
+  document.getElementById('locationFilter').addEventListener('input', filterJobs);
+
+  // Save job buttons
+  document.querySelectorAll('.save-job-btn').forEach(btn=>{
+    btn.addEventListener('click', async function(){
+      const title = this.dataset.title;
+      const res = await fetch('/profile/save_job', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: new URLSearchParams({job_title: title})
+      });
+      const data = await res.json();
+      if(data.success){
+        this.classList.remove('btn-outline-secondary');
+        this.classList.add('btn-success');
+        this.textContent = 'Saved';
+      } else {
+        alert(data.message || 'Please login to save jobs.');
+      }
+    });
+  });
+
+  // Apply buttons: send apply AJAX (sendBeacon if available), then open job link naturally (anchor will open)
+  document.querySelectorAll('.apply-job-link').forEach(a=>{
+    a.addEventListener('click', function(e){
+      const title = this.dataset.title;
+      // use navigator.sendBeacon if available (non-blocking)
+      const url = '/profile/apply_job';
+      const params = new URLSearchParams();
+      params.append('job_title', title);
+      try {
+        // sendBeacon expects a Blob or string; convert to Blob
+        const blob = new Blob([params.toString()], {type: 'application/x-www-form-urlencoded'});
+        navigator.sendBeacon(url, blob);
+      } catch(err){
+        // fallback to fetch without waiting
+        fetch(url, {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: params});
+      }
+      // anchor proceeds to open in new tab (no preventDefault)
+    });
+  });
+</script>
+{% endblock %}

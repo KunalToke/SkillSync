@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-success mb-4">✅ Applied Jobs</h2>
+
+    {% if jobs %}
+        <div class="row">
+            {% for job in jobs %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            {{ job.title }} - {{ job.company }}
+                            <!-- 🔹 Status Badge -->
+                            {% if job.status %}
+                                <span class="badge 
+                                    {% if job.status == 'Pending' %} bg-warning text-dark
+                                    {% elif job.status == 'Interview Scheduled' %} bg-info text-dark
+                                    {% elif job.status == 'Rejected' %} bg-danger
+                                    {% elif job.status == 'Hired' %} bg-success
+                                    {% else %} bg-secondary
+                                    {% endif %}
+                                    ms-2">
+                                    {{ job.status }}
+                                </span>
+                            {% endif %}
+                        </h4>
+
+                        <p><b>Skills:</b> {{ job.skills }}</p>
+                        <p><b>Location:</b> {{ job.location }} | 
+                           <b>Type:</b> {{ job.type }} | 
+                           <b>Experience:</b> {{ job.experience }}</p>
+                        <p>{{ job.description }}</p>
+
+                        <!-- External apply link -->
+                        <a href="{{ job.apply_link }}" target="_blank" class="btn btn-primary btn-sm">
+                            🌐 Go to Application
+                        </a>
+
+                        <!-- 👇 Status Dropdown -->
+                        <form method="POST" 
+                              action="{{ url_for('matching.update_status', job_id=job.id) }}" 
+                              class="mt-2">
+                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                <option value="Pending" {% if job.status == "Pending" %}selected{% endif %}>Pending</option>
+                                <option value="Interview Scheduled" {% if job.status == "Interview Scheduled" %}selected{% endif %}>Interview Scheduled</option>
+                                <option value="Rejected" {% if job.status == "Rejected" %}selected{% endif %}>Rejected</option>
+                                <option value="Hired" {% if job.status == "Hired" %}selected{% endif %}>Hired</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-muted">You haven’t applied for any jobs yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

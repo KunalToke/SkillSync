@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 text-primary"><i class="fas fa-user-check"></i> Skill & Interest Assessment</h2>
+
+<div class="card shadow p-4">
+  <form method="POST">
+      <div class="mb-3">
+          <label class="form-label">Your Skills</label>
+          <input type="text" class="form-control" name="skills" placeholder="e.g. Python, AI, SQL">
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Your Interests</label>
+          <input type="text" class="form-control" name="interests" placeholder="e.g. Data Science, Web Dev">
+      </div>
+
+      <button type="submit" class="btn btn-success"><i class="fas fa-magic"></i> Get Recommendations</button>
+  </form>
+</div>
+{% endblock %}

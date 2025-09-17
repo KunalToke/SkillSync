@@ -1,0 +1,19 @@
+<!-- career_path/upskilling.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Upskilling Resources</h2>
+  {% for role, links in resources.items() %}
+    <div class="card mb-3 shadow">
+      <div class="card-body">
+        <h5 class="card-title">{{ role }}</h5>
+        <ul>
+          {% for res in links %}
+          <li><a href="#" target="_blank">{{ res }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

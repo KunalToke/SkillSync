@@ -1,0 +1,37 @@
+{
+  "username": "Sujal",
+  "name": "Sujal",
+  "headline": "ecjh",
+  "location": "wqdxwxcescc",
+  "relocation": "No",
+  "contact_email": "",
+  "contact_phone": "",
+  "profile_pic": "/static/uploads/profile_pics/Sujal_profile.png",
+  "cover_pic": "/static/uploads/cover_pics/Sujal_cover.png",
+  "about": "rf",
+  "skills": [],
+  "education": [],
+  "experience": [],
+  "portfolio": {
+    "github": "",
+    "linkedin": "",
+    "behance": ""
+  },
+  "resume": "",
+  "roadmap_progress": 0,
+  "assessments": [],
+  "certificates": [],
+  "job_preferences": {
+    "role": "",
+    "salary": "",
+    "work_type": ""
+  },
+  "saved_jobs": [],
+  "applied_jobs": [],
+  "endorsements": [],
+  "timeline": [],
+  "achievements": [],
+  "visibility": "public",
+  "resume_sharing": true,
+  "last_updated": "2025-09-11T14:57:28.008941"
+}

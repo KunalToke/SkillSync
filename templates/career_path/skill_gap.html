@@ -1,0 +1,21 @@
+<!-- career_path/skill_gap.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Skill Gap Analysis</h2>
+  <p><b>Your Current Skills:</b> {{ user_skills | join(", ") }}</p>
+
+  {% for role, missing in gaps.items() %}
+    <div class="card mb-3 shadow">
+      <div class="card-body">
+        <h5 class="card-title">{{ role }}</h5>
+        {% if missing %}
+          <p>Missing Skills: {{ missing | join(", ") }}</p>
+        {% else %}
+          <p class="text-success">✅ You already have all required skills!</p>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

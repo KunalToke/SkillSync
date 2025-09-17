@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="form-container">
+    <div class="form-card">
+        <h2>Build Your Strong Resume</h2>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="phone" placeholder="Phone" required>
+            <textarea name="skills" placeholder="Skills (comma separated)" required></textarea>
+            <textarea name="education" placeholder="Education" required></textarea>
+            <textarea name="experience" placeholder="Work Experience" required></textarea>
+            <textarea name="projects" placeholder="Projects"></textarea>
+
+            <!-- Template Selection -->
+            <label for="template" style="color:white;">Choose Resume Template:</label>
+            <select name="template" required>
+                <option value="template1">Template 1 (Simple & Clean)</option>
+                <option value="template2">Template 2 (Modern Blue)</option>
+                <option value="template3">Template 3 (Creative Pink)</option>
+            </select>
+
+            <button type="submit">Generate Resume</button>
+        </form>
+    </div>
+</div>
+
+{% if resume %}
+<div class="resume-preview">
+    <h2>📄 Resume Preview ({{ resume.template|capitalize }})</h2>
+
+    <!-- Template 1 -->
+    {% if resume.template == "template1" %}
+    <div class="resume-card template1">
+        <h3>{{ resume.name }}</h3>
+        <p><b>Email:</b> {{ resume.email }}</p>
+        <p><b>Phone:</b> {{ resume.phone }}</p>
+        <hr>
+        <p><b>Skills:</b> {{ resume.skills }}</p>
+        <p><b>Education:</b> {{ resume.education }}</p>
+        <p><b>Experience:</b> {{ resume.experience }}</p>
+        <p><b>Projects:</b> {{ resume.projects }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Template 2 -->
+    {% if resume.template == "template2" %}
+    <div class="resume-card template2">
+        <h2>{{ resume.name }}</h2>
+        <p>📧 {{ resume.email }} | 📞 {{ resume.phone }}</p>
+        <hr>
+        <h4>Skills</h4>
+        <p>{{ resume.skills }}</p>
+        <h4>Education</h4>
+        <p>{{ resume.education }}</p>
+        <h4>Experience</h4>
+        <p>{{ resume.experience }}</p>
+        <h4>Projects</h4>
+        <p>{{ resume.projects }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Template 3 -->
+    {% if resume.template == "template3" %}
+    <div class="resume-card template3">
+        <h1>{{ resume.name }}</h1>
+        <p><i>Email:</i> {{ resume.email }} | <i>Phone:</i> {{ resume.phone }}</p>
+        <hr>
+        <section>
+            <h3>🌟 Skills</h3>
+            <p>{{ resume.skills }}</p>
+        </section>
+        <section>
+            <h3>🎓 Education</h3>
+            <p>{{ resume.education }}</p>
+        </section>
+        <section>
+            <h3>💼 Experience</h3>
+            <p>{{ resume.experience }}</p>
+        </section>
+        <section>
+            <h3>📌 Projects</h3>
+            <p>{{ resume.projects }}</p>
+        </section>
+    </div>
+    {% endif %}
+
+    <!-- ✅ Export Buttons -->
+    <form method="POST">
+        <input type="hidden" name="name" value="{{ resume.name }}">
+        <input type="hidden" name="email" value="{{ resume.email }}">
+        <input type="hidden" name="phone" value="{{ resume.phone }}">
+        <input type="hidden" name="skills" value="{{ resume.skills }}">
+        <input type="hidden" name="education" value="{{ resume.education }}">
+        <input type="hidden" name="experience" value="{{ resume.experience }}">
+        <input type="hidden" name="projects" value="{{ resume.projects }}">
+        <input type="hidden" name="template" value="{{ resume.template }}">
+
+        <button type="submit" name="export_pdf">⬇ Download as PDF</button>
+        <button type="submit" name="export_docx">⬇ Download as DOCX</button>
+    </form>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,20 @@
+<!-- career_path/transition.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Career Transitions</h2>
+  {% for current, steps in transitions.items() %}
+  <div class="card shadow mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ current }}</h5>
+      <p>Steps to Transition:</p>
+      <ul>
+        {% for step in steps %}
+        <li>{{ step }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

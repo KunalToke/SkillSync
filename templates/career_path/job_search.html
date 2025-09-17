@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">💼 Job Search</h2>
+
+  <!-- Filters -->
+  <form method="get" class="row mb-4">
+    <div class="col-md-4">
+      <input type="text" name="title" value="{{ title }}" class="form-control" placeholder="Search by job title">
+    </div>
+    <div class="col-md-4">
+      <input type="text" name="company" value="{{ company }}" class="form-control" placeholder="Search by company">
+    </div>
+    <div class="col-md-4">
+      <input type="text" name="location" value="{{ location }}" class="form-control" placeholder="Search by location">
+    </div>
+    <div class="col-12 text-center mt-3">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
+  <!-- Jobs -->
+  <div class="row">
+    {% for job in jobs %}
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ job.title }}</h5>
+          <p class="card-text"><b>{{ job.company }}</b><br><small>{{ job.location }}</small></p>
+          <div class="mt-auto">
+            <a href="{{ job.link }}" target="_blank" class="btn btn-sm btn-primary">Apply Now</a>
+            <button type="button" class="btn btn-sm btn-outline-secondary save-job-btn"
+                    data-title="{{ job.title }}">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  <nav class="mt-4">
+    <ul class="pagination justify-content-center">
+      {% if page > 1 %}
+        <li class="page-item">
+          <a class="page-link" href="?title={{title}}&company={{company}}&location={{location}}&page={{page-1}}">Previous</a>
+        </li>
+      {% endif %}
+      {% for p in range(1, total_pages+1) %}
+        <li class="page-item {% if p==page %}active{% endif %}">
+          <a class="page-link" href="?title={{title}}&company={{company}}&location={{location}}&page={{p}}">{{p}}</a>
+        </li>
+      {% endfor %}
+      {% if page < total_pages %}
+        <li class="page-item">
+          <a class="page-link" href="?title={{title}}&company={{company}}&location={{location}}&page={{page+1}}">Next</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endblock %}

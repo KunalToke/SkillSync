@@ -1,0 +1,68 @@
+<!-- career_path/career_path_guidance.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-lg p-4">
+    <h1 class="text-center mb-4">🚀 Career Path Guidance</h1>
+    <p class="text-center text-muted">Explore your career journey step by step – from assessment to mentorship.</p>
+
+    <div class="row mt-4">
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.assessment') }}" class="btn btn-outline-primary w-100 p-3 rounded-3 shadow-sm">
+          <h5>📝 Skill & Interest Assessment</h5>
+          <small>Take a quiz to discover your strengths</small>
+        </a>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.ai_recommendations') }}" class="btn btn-outline-success w-100 p-3 rounded-3 shadow-sm">
+          <h5>🤖 AI Recommendations</h5>
+          <small>Get AI-powered career suggestions</small>
+        </a>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.job_market') }}" class="btn btn-outline-warning w-100 p-3 rounded-3 shadow-sm">
+          <h5>📊 Job Market Insights</h5>
+          <small>See salaries & growth trends</small>
+        </a>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.skill_gap') }}" class="btn btn-outline-danger w-100 p-3 rounded-3 shadow-sm">
+          <h5>⚡ Skill Gap Analysis</h5>
+          <small>Find missing skills for your target role</small>
+        </a>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.upskilling') }}" class="btn btn-outline-info w-100 p-3 rounded-3 shadow-sm">
+          <h5>📚 Upskilling Resources</h5>
+          <small>Learn new skills from best platforms</small>
+        </a>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.roadmap') }}" class="btn btn-outline-dark w-100 p-3 rounded-3 shadow-sm">
+          <h5>🗺️ Career Roadmaps</h5>
+          <small>Follow step-by-step structured plans</small>
+        </a>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.mentorship') }}" class="btn btn-outline-secondary w-100 p-3 rounded-3 shadow-sm">
+          <h5>👩‍🏫 Mentorship</h5>
+          <small>Connect with industry mentors</small>
+        </a>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('career_path.transition') }}" class="btn btn-outline-primary w-100 p-3 rounded-3 shadow-sm">
+          <h5>🔄 Career Transitions</h5>
+          <small>Switch to new roles with guidance</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

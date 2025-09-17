@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="page-title">Skill Development</h2>
+    <p class="subtitle">Browse and learn from resources across multiple technical fields 🚀</p>
+
+    <!-- Filter + Search -->
+    <div class="filters">
+        <label for="category">Filter by Category:</label>
+        <select id="category" onchange="filterResources()">
+            <option value="all">All</option>
+            <option value="Cyber Security">Cyber Security</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
+            <option value="Full Stack">Full Stack</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Programming">Programming</option>
+            <option value="Cloud">Cloud</option>
+            <option value="AI/ML">AI & ML</option>
+            <option value="Data Science">Data Science</option>
+        </select>
+
+        <input type="text" id="searchBox" onkeyup="filterResources()" placeholder="Search skills (e.g., React, AWS, Java)">
+    </div>
+
+    <div id="resources">
+        {% for res in resources %}
+        <div class="resource" data-category="{{ res.category }}">
+            <h3>{{ res.title }}</h3>
+            <a href="{{ res.link }}" target="_blank">{{ res.link }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.container { max-width: 900px; margin: auto; padding: 20px; }
+.page-title { text-align: center; margin-bottom: 10px; }
+.subtitle { text-align: center; margin-bottom: 20px; color: gray; }
+.filters { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
+.filters select, .filters input { padding: 8px; font-size: 14px; flex: 1; }
+.resource { background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 6px; }
+.resource h3 { margin: 0; }
+</style>
+
+<script>
+function filterResources() {
+    const category = document.getElementById("category").value.toLowerCase();
+    const search = document.getElementById("searchBox").value.toLowerCase();
+    const resources = document.querySelectorAll(".resource");
+
+    resources.forEach(res => {
+        const text = res.innerText.toLowerCase();
+        const resCategory = res.getAttribute("data-category").toLowerCase();
+
+        if ((category === "all" || resCategory.includes(category)) && text.includes(search)) {
+            res.style.display = "block";
+        } else {
+            res.style.display = "none";
+        }
+    });
+}
+</script>
+{% endblock %}

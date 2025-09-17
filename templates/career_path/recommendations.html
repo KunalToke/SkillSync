@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 text-primary"><i class="fas fa-lightbulb"></i> AI-Powered Career Recommendations</h2>
+
+{% if skills and interests %}
+<div class="alert alert-info">
+  <b>Your Skills:</b> {{ skills }} <br>
+  <b>Your Interests:</b> {{ interests }}
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card shadow border-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title text-success"><i class="fas fa-robot"></i> AI/ML Engineer</h5>
+        <p class="card-text">Work on Artificial Intelligence and build machine learning models.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card shadow border-primary mb-3">
+      <div class="card-body">
+        <h5 class="card-title text-primary"><i class="fas fa-database"></i> Data Scientist</h5>
+        <p class="card-text">Analyze data, extract insights, and build predictive models.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card shadow border-warning mb-3">
+      <div class="card-body">
+        <h5 class="card-title text-warning"><i class="fas fa-code"></i> Full-Stack Developer</h5>
+        <p class="card-text">Develop end-to-end applications using modern frameworks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<p>➡️ Take the <a href="{{ url_for('career_path.skill_assessment') }}">assessment</a> to see personalized recommendations.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Career Path Guidance</h2>
+<p>Suggested roadmap to grow in your career:</p>
+<ul>
+    {% for step in guidance %}
+    <li>{{ step }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

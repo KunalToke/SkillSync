@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h3>Candidate Videos</h3>
+  {% if videos %}
+    <ul>
+      {% for v in videos %}
+        <li>
+          <video src="{{ url_for('static', filename='uploads/videos/' ~ v) }}" controls width="300"></video>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No videos uploaded yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}SkillSync | Post a Job{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="fas fa-briefcase text-primary"></i> Post a Job</h2>
+    <a href="{{ url_for('talent_seekers.dashboard') }}" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-left"></i> Dashboard
+    </a>
+  </div>
+
+  <div class="card shadow-lg border-0 mb-5">
+    <div class="card-body p-4">
+      <h5 class="card-title fw-bold text-primary">Create a New Job</h5>
+      <form method="POST" action="{{ url_for('talent_seekers.post_job') }}">
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label">Title</label><input type="text" class="form-control" name="title" required></div>
+          <div class="col-md-6"><label class="form-label">Location</label><input type="text" class="form-control" name="location" required></div>
+          <div class="col-md-6"><label class="form-label">Skills</label><input type="text" class="form-control" name="skills" required></div>
+          <div class="col-md-3"><label class="form-label">Salary</label><input type="text" class="form-control" name="salary" required></div>
+          <div class="col-md-3"><label class="form-label">Openings</label><input type="number" class="form-control" name="openings" required></div>
+        </div>
+        <div class="mt-4 text-end"><button type="submit" class="btn btn-primary">Post Job</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white fw-bold">Posted Jobs</div>
+    <div class="card-body">
+      {% if jobs %}
+      <table class="table table-hover">
+        <thead><tr><th>Title</th><th>Skills</th><th>Location</th><th>Salary</th><th>Openings</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for job in jobs %}
+          <tr>
+            <td>{{ job["title"] }}</td>
+            <td>{{ job["skills"] }}</td>
+            <td>{{ job["location"] }}</td>
+            <td>{{ job["salary"] }}</td>
+            <td>{{ job["openings"] }}</td>
+            <td>
+              <a href="{{ url_for('talent_seekers.edit_job', job_id=job['id']) }}" class="btn btn-sm btn-warning">Edit</a>
+              <form method="POST" action="{{ url_for('talent_seekers.delete_job', job_id=job['id']) }}" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-muted">No jobs posted yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

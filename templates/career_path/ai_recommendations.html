@@ -1,0 +1,29 @@
+<!-- career_path/ai_recommendations.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">AI-Powered Career Recommendations</h2>
+  
+  {% if not suggestions %}
+    <div class="alert alert-warning text-center">Please complete the assessment first.</div>
+  {% else %}
+    <div class="row">
+      {% for role in suggestions %}
+      <div class="col-md-4">
+        <div class="card shadow-lg mb-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ role }}</h5>
+            <p class="card-text">Suggested learning path:</p>
+            <ul>
+              {% for path in learning_paths %}
+              <li>{{ path }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

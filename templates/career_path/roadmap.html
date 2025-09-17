@@ -1,0 +1,144 @@
+<!-- File: templates/career_path/roadmap.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">🗺️ Career Roadmaps</h2>
+
+  <!-- Search Filter -->
+  <div class="mb-4 text-center">
+    <input type="text" id="searchBox" class="form-control w-50 mx-auto" placeholder="🔍 Search for a career (e.g. AI, Web, Cloud)">
+  </div>
+
+  <!-- Roadmap Container -->
+  <div id="roadmapContainer">
+    <!-- Roadmaps will load here -->
+  </div>
+</div>
+
+<script>
+// Detailed Roadmaps with Timelines
+const roadmaps = {
+  ai_engineer: {
+    title: "AI Engineer",
+    steps: [
+      "Month 1 (Week 1–2): Python Basics & Math Refresher",
+      "Month 1 (Week 3–4): Data Structures & Algorithms",
+      "Month 2: Machine Learning Fundamentals",
+      "Month 3: Deep Learning & Neural Networks",
+      "Month 4: Cloud AI (AWS, GCP, Azure)",
+      "Month 5–6: Build AI Projects & Research Papers"
+    ]
+  },
+  data_scientist: {
+    title: "Data Scientist",
+    steps: [
+      "Month 1: Python, SQL, and Excel",
+      "Month 2: Statistics & Probability",
+      "Month 3: Data Wrangling & Visualization",
+      "Month 4: Machine Learning Models",
+      "Month 5: Big Data Tools (Hadoop, Spark)",
+      "Month 6: Deploy Data Pipelines"
+    ]
+  },
+  web_developer: {
+    title: "Web Developer",
+    steps: [
+      "Week 1–2: HTML, CSS, JavaScript",
+      "Week 3–4: Responsive Design & Git",
+      "Month 2: Frontend Frameworks (React/Angular)",
+      "Month 3: Backend (Node.js, Django, Flask)",
+      "Month 4: Databases (SQL, MongoDB)",
+      "Month 5: APIs & Authentication",
+      "Month 6: Full-Stack Projects + Deployment"
+    ]
+  },
+  uiux: {
+    title: "UI/UX Designer",
+    steps: [
+      "Week 1–2: Design Basics & Color Theory",
+      "Week 3–4: Wireframing & Sketching",
+      "Month 2: Figma / Adobe XD Mastery",
+      "Month 3: Prototyping & Usability Testing",
+      "Month 4: User Research & Psychology",
+      "Month 5: Build Portfolio",
+      "Month 6: Advanced UX Strategies"
+    ]
+  },
+  cybersecurity: {
+    title: "Cybersecurity Analyst",
+    steps: [
+      "Month 1: Networking Fundamentals",
+      "Month 2: Linux & System Security",
+      "Month 3: Ethical Hacking Basics",
+      "Month 4: Security Tools (Wireshark, Metasploit)",
+      "Month 5: Certifications (CEH, OSCP)",
+      "Month 6: Real-World Security Projects"
+    ]
+  },
+  cloud_engineer: {
+    title: "Cloud Engineer",
+    steps: [
+      "Month 1: Linux & Networking Basics",
+      "Month 2: Cloud Platforms (AWS, GCP, Azure)",
+      "Month 3: Virtualization & Containers (Docker)",
+      "Month 4: DevOps Tools (CI/CD, Jenkins)",
+      "Month 5: Kubernetes & Orchestration",
+      "Month 6: Cloud Security & Compliance"
+    ]
+  },
+  product_manager: {
+    title: "Product Manager",
+    steps: [
+      "Month 1: Business & Marketing Basics",
+      "Month 2: Agile & Scrum",
+      "Month 3: Design Thinking",
+      "Month 4: Analytics & KPIs",
+      "Month 5: Roadmap Planning",
+      "Month 6: Leadership & Strategy"
+    ]
+  }
+};
+
+// Render roadmaps
+function renderRoadmaps(filter = "") {
+  const container = document.getElementById("roadmapContainer");
+  container.innerHTML = "";
+
+  Object.values(roadmaps).forEach(career => {
+    if (career.title.toLowerCase().includes(filter.toLowerCase())) {
+      const section = document.createElement("div");
+      section.className = "mb-5";
+
+      let cardsHTML = "";
+      career.steps.forEach((step, index) => {
+        cardsHTML += `
+          <div class="card text-center p-3 m-2 shadow" style="width: 220px;">
+            <p><b>Step ${index + 1}</b><br>${step}</p>
+          </div>
+        `;
+        if (index < career.steps.length - 1) {
+          cardsHTML += `<div class="mx-2 fs-3">➡️</div>`;
+        }
+      });
+
+      section.innerHTML = `
+        <h4 class="mb-3">${career.title}</h4>
+        <div class="d-flex flex-wrap align-items-center justify-content-center">${cardsHTML}</div>
+        <div class="text-center mt-3">
+          <a href="/career_path/download_pdf/${career.title.replace(/ /g, '_')}" class="btn btn-outline-primary btn-sm">⬇ Download PDF</a>
+        </div>
+      `;
+      container.appendChild(section);
+    }
+  });
+}
+
+// Initial render
+renderRoadmaps();
+
+// Search filter
+document.getElementById("searchBox").addEventListener("input", function() {
+  renderRoadmaps(this.value);
+});
+</script>
+{% endblock %}

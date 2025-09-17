@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">🎯 Interview Preparation Hub</h2>
+
+    <!-- Search & Filter Bar -->
+    <form method="GET" action="{{ url_for('interview.interview_prep') }}" 
+          class="d-flex justify-content-center mb-4 flex-wrap">
+
+        <select name="company" class="form-select me-2 mb-2" style="max-width:200px;">
+            <option value="">All Companies</option>
+            {% for c in companies %}
+                <option value="{{ c }}" {% if company_filter == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="text" name="keyword" class="form-control me-2 mb-2"
+               placeholder="Search questions (e.g. SQL, System Design)" 
+               value="{{ keyword }}" style="max-width:300px;">
+
+        <button type="submit" class="btn btn-success mb-2">🔍 Search</button>
+    </form>
+
+    {% if interview_questions %}
+        {% for company, questions in interview_questions.items() %}
+        <div class="card shadow-lg mb-4 border-0 rounded-3">
+            <div class="card-header bg-gradient text-white fw-bold" 
+                 style="background: linear-gradient(90deg, #007bff, #6610f2);">
+                {{ company }}
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for q in questions %}
+                    <li class="list-group-item">
+                        <span class="fw-bold text-dark">Q:</span> {{ q }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center text-muted">No questions found for your search. Try another keyword.</p>
+    {% endif %}
+</div>
+{% endblock %}

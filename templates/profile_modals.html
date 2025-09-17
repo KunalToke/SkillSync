@@ -1,0 +1,348 @@
+<!-- ================== Edit Basics Modal ================== -->
+<div class="modal fade" id="editBasicsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="POST" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Basic Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Full Name</label>
+            <input name="name" class="form-control" value="{{ user.name }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Headline</label>
+            <input name="headline" class="form-control" value="{{ user.headline }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Location</label>
+            <input name="location" class="form-control" value="{{ user.location }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Relocation</label>
+            <select name="relocation" class="form-select">
+              <option value="No" {% if user.relocation == 'No' %}selected{% endif %}>No</option>
+              <option value="Yes" {% if user.relocation == 'Yes' %}selected{% endif %}>Yes</option>
+              <option value="Open" {% if user.relocation == 'Open' %}selected{% endif %}>Open</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Contact Email</label>
+            <input name="contact_email" class="form-control" value="{{ user.contact_email }}">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Edit About Modal ================== -->
+<div class="modal fade" id="editAboutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit About / Bio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <textarea name="about" class="form-control" rows="5">{{ user.about }}</textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Edit Skills Modal ================== -->
+<div class="modal fade" id="editSkillsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Skills</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input name="skills" class="form-control" value="{% for s in user.skills %}{{ s.name }}:{{ s.rating }}{% if not loop.last %},{% endif %}{% endfor %}">
+          <div class="form-text">Example: Python:5, React:3</div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Edit Education Modal ================== -->
+<div class="modal fade" id="editEducationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Education</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modalEducationList">
+            {% for e in user.education %}
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" name="education[]" value="{{ e.degree }} | {{ e.school }} | {{ e.year }}">
+                <button type="button" class="btn btn-outline-danger removeEduBtn">Remove</button>
+              </div>
+            {% else %}
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" name="education[]" placeholder="Degree | School | Year">
+                <button type="button" class="btn btn-outline-danger removeEduBtn">Remove</button>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addModalEducation">+ Add Education</button>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Edit Experience Modal ================== -->
+<div class="modal fade" id="editExperienceModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Experience</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modalExperienceList">
+            {% for ex in user.experience %}
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" name="experience[]" value="{{ ex.role }} | {{ ex.company }} | {{ ex.duration }} | {{ ex.desc }}">
+                <button type="button" class="btn btn-outline-danger removeExpBtn">Remove</button>
+              </div>
+            {% else %}
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" name="experience[]" placeholder="Role | Company | Duration | Description">
+                <button type="button" class="btn btn-outline-danger removeExpBtn">Remove</button>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addModalExperience">+ Add Experience</button>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Edit Resume Modal ================== -->
+<div class="modal fade" id="editResumeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Resume & Preferences</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label">Upload Resume</label>
+          <input type="file" name="resume" accept=".pdf,.doc,.docx" class="form-control mb-3">
+          {% if user.resume %}
+            <a href="{{ user.resume }}" target="_blank" class="btn btn-sm btn-outline-secondary">View</a>
+            <a href="{{ url_for('profile.download_resume', username=user.username) }}" class="btn btn-sm btn-primary">Download</a>
+          {% endif %}
+          <hr>
+          <label class="form-label">Job Preferences</label>
+          <input name="pref_role" class="form-control mb-2" value="{{ user.job_preferences.role }}" placeholder="Desired role">
+          <input name="pref_salary" class="form-control mb-2" value="{{ user.job_preferences.salary }}" placeholder="Salary expectation">
+          <select name="pref_work_type" class="form-select">
+            <option value="remote" {% if user.job_preferences.work_type=='remote' %}selected{% endif %}>Remote</option>
+            <option value="hybrid" {% if user.job_preferences.work_type=='hybrid' %}selected{% endif %}>Hybrid</option>
+            <option value="onsite" {% if user.job_preferences.work_type=='onsite' %}selected{% endif %}>On-site</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Edit Settings Modal ================== -->
+<div class="modal fade" id="editSettingsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Privacy & Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Profile Visibility</label>
+            <select name="visibility" class="form-select">
+              <option value="public" {% if user.visibility=='public' %}selected{% endif %}>Public</option>
+              <option value="private" {% if user.visibility=='private' %}selected{% endif %}>Private</option>
+              <option value="recruiters" {% if user.visibility=='recruiters' %}selected{% endif %}>Only Recruiters</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Resume Sharing</label>
+            <div class="form-check form-switch mt-2">
+              <input class="form-check-input" type="checkbox" name="resume_sharing" {% if user.resume_sharing %}checked{% endif %}>
+              <label class="form-check-label">Allow resume sharing</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Profile Picture Modal ================== -->
+<div class="modal fade" id="editProfilePicModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Profile Picture</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="profilePicInput" accept="image/*" class="form-control">
+        <img id="profilePreview" class="mt-3 w-100 rounded d-none" style="max-height:200px; object-fit:cover;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="saveProfilePicBtn" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Cover Photo Modal ================== -->
+<div class="modal fade" id="editCoverPicModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Cover Photo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="coverPicInput" accept="image/*" class="form-control">
+        <img id="coverPreview" class="mt-3 w-100 rounded d-none" style="max-height:200px; object-fit:cover;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="saveCoverPicBtn" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== Scripts ================== -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // --- Education Modal ---
+  document.addEventListener("click", function(e){
+    if(e.target && e.target.matches("#addModalEducation")){
+      const container = document.getElementById("modalEducationList");
+      const div = document.createElement("div");
+      div.className = "input-group mb-2";
+      div.innerHTML = `<input type="text" class="form-control" name="education[]" placeholder="Degree | School | Year">
+                       <button type="button" class="btn btn-outline-danger removeEduBtn">Remove</button>`;
+      container.appendChild(div);
+    }
+    if(e.target && e.target.matches(".removeEduBtn")){
+      e.target.closest(".input-group").remove();
+    }
+  });
+
+  // --- Experience Modal ---
+  document.addEventListener("click", function(e){
+    if(e.target && e.target.matches("#addModalExperience")){
+      const container = document.getElementById("modalExperienceList");
+      const div = document.createElement("div");
+      div.className = "input-group mb-2";
+      div.innerHTML = `<input type="text" class="form-control" name="experience[]" placeholder="Role | Company | Duration | Description">
+                       <button type="button" class="btn btn-outline-danger removeExpBtn">Remove</button>`;
+      container.appendChild(div);
+    }
+    if(e.target && e.target.matches(".removeExpBtn")){
+      e.target.closest(".input-group").remove();
+    }
+  });
+
+  // --- Profile Pic Preview ---
+  document.getElementById("profilePicInput").addEventListener("change", function(){
+    const file = this.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = e => {
+        const preview = document.getElementById("profilePreview");
+        preview.src = e.target.result;
+        preview.classList.remove("d-none");
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // --- Cover Pic Preview ---
+  document.getElementById("coverPicInput").addEventListener("change", function(){
+    const file = this.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = e => {
+        const preview = document.getElementById("coverPreview");
+        preview.src = e.target.result;
+        preview.classList.remove("d-none");
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // --- Upload Profile Pic (AJAX) ---
+  document.getElementById("saveProfilePicBtn").addEventListener("click", async () => {
+    const input = document.getElementById("profilePicInput");
+    if (!input.files.length) return;
+    const formData = new FormData();
+    formData.append("file", input.files[0]);
+    const res = await fetch("/profile/upload_pic", { method: "POST", body: formData });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById("profileDisplay").src = data.url;
+      bootstrap.Modal.getInstance(document.getElementById("editProfilePicModal")).hide();
+    }
+  });
+
+  // --- Upload Cover Pic (AJAX) ---
+  document.getElementById("saveCoverPicBtn").addEventListener("click", async () => {
+    const input = document.getElementById("coverPicInput");
+    if (!input.files.length) return;
+    const formData = new FormData();
+    formData.append("file", input.files[0]);
+    const res = await fetch("/profile/upload_cover", { method: "POST", body: formData });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById("coverDisplay").src = data.url;
+      bootstrap.Modal.getInstance(document.getElementById("editCoverPicModal")).hide();
+    }
+  });
+});
+</script>
