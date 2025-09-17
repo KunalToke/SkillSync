@@ -21,7 +21,9 @@ from models.jobs import jobs_by_company
 
 # ---------- App Initialization ----------
 app = Flask(__name__)
-app.secret_key = "your_secret_key"
+import os
+app.secret_key = os.environ.get("SECRET_KEY", "fallback_secret")
+
 
 # ---------- Database Configuration ----------
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///career_platform.db"
