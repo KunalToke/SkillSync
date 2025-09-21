@@ -1,106 +1,150 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="form-container">
-    <div class="form-card">
-        <h2>Build Your Strong Resume</h2>
-        <form method="POST">
-            <input type="text" name="name" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="text" name="phone" placeholder="Phone" required>
-            <textarea name="skills" placeholder="Skills (comma separated)" required></textarea>
-            <textarea name="education" placeholder="Education" required></textarea>
-            <textarea name="experience" placeholder="Work Experience" required></textarea>
-            <textarea name="projects" placeholder="Projects"></textarea>
+<div class="resume-container">
+    <form method="POST" enctype="multipart/form-data">
+        <!-- TOP SECTION -->
+        <div class="resume-header">
+            <!-- Profile Photo -->
+            <div class="photo-section">
+                <label>Upload Profile Photo</label>
+                <input type="file" name="photo" accept="image/*">
+            </div>
 
-            <!-- Template Selection -->
-            <label for="template" style="color:white;">Choose Resume Template:</label>
-            <select name="template" required>
-                <option value="template1">Template 1 (Simple & Clean)</option>
-                <option value="template2">Template 2 (Modern Blue)</option>
-                <option value="template3">Template 3 (Creative Pink)</option>
-            </select>
+            <!-- Candidate Name & Role -->
+            <div class="headline-section">
+                <label>Full Name</label>
+                <input type="text" name="name" placeholder="John Doe" required>
 
-            <button type="submit">Generate Resume</button>
-        </form>
-    </div>
-</div>
+                <label>Role / Headline</label>
+                <input type="text" name="role" placeholder="Software Engineer | Data Scientist">
+            </div>
+        </div>
 
-{% if resume %}
-<div class="resume-preview">
-    <h2>📄 Resume Preview ({{ resume.template|capitalize }})</h2>
+        <div class="resume-body">
+            <!-- LEFT SIDEBAR -->
+            <div class="left-column">
+                <h3>📞 Contact Information</h3>
+                <input type="text" name="phone" placeholder="Phone Number" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="address" placeholder="Address">
 
-    <!-- Template 1 -->
-    {% if resume.template == "template1" %}
-    <div class="resume-card template1">
-        <h3>{{ resume.name }}</h3>
-        <p><b>Email:</b> {{ resume.email }}</p>
-        <p><b>Phone:</b> {{ resume.phone }}</p>
-        <hr>
-        <p><b>Skills:</b> {{ resume.skills }}</p>
-        <p><b>Education:</b> {{ resume.education }}</p>
-        <p><b>Experience:</b> {{ resume.experience }}</p>
-        <p><b>Projects:</b> {{ resume.projects }}</p>
-    </div>
-    {% endif %}
+                <h3>🎓 Education</h3>
+                <textarea name="education" rows="3" placeholder="Degree, University, Year"></textarea>
 
-    <!-- Template 2 -->
-    {% if resume.template == "template2" %}
-    <div class="resume-card template2">
-        <h2>{{ resume.name }}</h2>
-        <p>📧 {{ resume.email }} | 📞 {{ resume.phone }}</p>
-        <hr>
-        <h4>Skills</h4>
-        <p>{{ resume.skills }}</p>
-        <h4>Education</h4>
-        <p>{{ resume.education }}</p>
-        <h4>Experience</h4>
-        <p>{{ resume.experience }}</p>
-        <h4>Projects</h4>
-        <p>{{ resume.projects }}</p>
-    </div>
-    {% endif %}
+                <h3>🛠 Skills</h3>
+                <textarea name="skills" rows="3" placeholder="Python, ML, SQL, JavaScript"></textarea>
 
-    <!-- Template 3 -->
-    {% if resume.template == "template3" %}
-    <div class="resume-card template3">
-        <h1>{{ resume.name }}</h1>
-        <p><i>Email:</i> {{ resume.email }} | <i>Phone:</i> {{ resume.phone }}</p>
-        <hr>
-        <section>
-            <h3>🌟 Skills</h3>
-            <p>{{ resume.skills }}</p>
-        </section>
-        <section>
-            <h3>🎓 Education</h3>
-            <p>{{ resume.education }}</p>
-        </section>
-        <section>
-            <h3>💼 Experience</h3>
-            <p>{{ resume.experience }}</p>
-        </section>
-        <section>
-            <h3>📌 Projects</h3>
-            <p>{{ resume.projects }}</p>
-        </section>
-    </div>
-    {% endif %}
+                <h3>🏆 Certifications</h3>
+                <textarea name="certifications" rows="3" placeholder="Certification Name - Details"></textarea>
 
-    <!-- ✅ Export Buttons -->
-    <form method="POST">
-        <input type="hidden" name="name" value="{{ resume.name }}">
-        <input type="hidden" name="email" value="{{ resume.email }}">
-        <input type="hidden" name="phone" value="{{ resume.phone }}">
-        <input type="hidden" name="skills" value="{{ resume.skills }}">
-        <input type="hidden" name="education" value="{{ resume.education }}">
-        <input type="hidden" name="experience" value="{{ resume.experience }}">
-        <input type="hidden" name="projects" value="{{ resume.projects }}">
-        <input type="hidden" name="template" value="{{ resume.template }}">
+                <h3>🌐 Languages</h3>
+                <textarea name="languages" rows="3" placeholder="English (Fluent), Hindi (Intermediate), French (Basic)"></textarea>
 
-        <button type="submit" name="export_pdf">⬇ Download as PDF</button>
-        <button type="submit" name="export_docx">⬇ Download as DOCX</button>
+                <h3>🎨 Hobbies</h3>
+                <textarea name="hobbies" rows="3" placeholder="Your hobbies"></textarea>
+
+                <h3>💻 Portfolio</h3>
+                <textarea name="portfolio" rows="3" placeholder="Portfolio links or description"></textarea>
+            </div>
+
+            <!-- RIGHT MAIN COLUMN -->
+            <div class="right-column">
+                <h3>👤 Profile</h3>
+                <textarea name="objective" rows="3" placeholder="Write a short profile/summary about yourself"></textarea>
+
+                <h3>💼 Work Experience</h3>
+                <textarea name="experience" rows="5" placeholder="Company, Role, Duration, Responsibilities"></textarea>
+
+                <h3>📌 Projects</h3>
+                <textarea name="projects" rows="4" placeholder="Project Name - Details"></textarea>
+
+                <h3>🏅 Achievements</h3>
+                <textarea name="achievements" rows="3" placeholder="Achievement Title - Description"></textarea>
+
+                <h3>🤝 References</h3>
+                <textarea name="references" rows="3" placeholder="Reference Name, Position, Contact"></textarea>
+            </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="action-buttons">
+            <button type="submit" class="btn">✨ Generate Resume</button>
+        </div>
     </form>
 </div>
-{% endif %}
+
+<!-- STYLES -->
+<style>
+.resume-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.resume-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+.photo-section {
+    flex: 1;
+}
+.headline-section {
+    flex: 3;
+}
+.resume-body {
+    display: flex;
+    gap: 30px;
+}
+.left-column {
+    flex: 1.2;
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 10px;
+}
+.right-column {
+    flex: 2.5;
+    padding: 15px;
+}
+h3 {
+    margin-top: 20px;
+    color: #1e3a8a;
+    border-bottom: 2px solid #1e40af;
+    padding-bottom: 5px;
+}
+label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+}
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+}
+textarea { resize: vertical; }
+.btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.btn:hover { background: #1e40af; }
+.action-buttons {
+    text-align: center;
+}
+</style>
 
 {% endblock %}

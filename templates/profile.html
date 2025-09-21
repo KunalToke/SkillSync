@@ -5,38 +5,22 @@
   <!-- ================== Profile Header ================== -->
   <div class="card mb-4 shadow-sm">
     <div class="position-relative">
-      <!-- Cover Photo -->
+      <!-- Cover Photo (always default if not set) -->
       <img id="coverDisplay" 
-           src="{{ user.cover_pic if user.cover_pic else url_for('static', filename='images/default-cover.jpg') }}" 
+           src="{{ user.cover_pic or url_for('static', filename='images/default-cover.jpg') }}" 
            class="w-100 rounded-top" style="height:220px; object-fit:cover;">
 
-      <!-- Change Cover Button -->
-      <button type="button" class="btn btn-sm btn-outline-secondary position-absolute"
-              style="top:10px; right:10px;"
-              data-bs-toggle="modal" data-bs-target="#editCoverPicModal">
-        Change Cover
-      </button>
-
-      <!-- Profile Picture -->
+      <!-- Profile Picture (always default if not set) -->
       <div class="position-absolute" style="left:24px; bottom:-48px;">
         <img id="profileDisplay" 
-             src="{{ user.profile_pic if user.profile_pic else url_for('static', filename='images/default-profile.png') }}" 
+             src="{{ user.profile_pic or url_for('static', filename='images/default-profile.png') }}" 
              class="rounded-circle shadow" width="96" height="96" 
              style="border:4px solid white; object-fit:cover;">
-
-        <!-- Change Photo Button -->
-        <button type="button" class="btn btn-sm btn-outline-secondary mt-2"
-                data-bs-toggle="modal" data-bs-target="#editProfilePicModal">
-          Change Photo
-        </button>
       </div>
     </div>
     <div class="card-body mt-4">
-      <h3>{{ user.name or "Your Name" }}</h3>
+      <h3>{{ user.name or user.username }}</h3>
       <p class="text-muted">{{ user.headline or "Add a headline..." }}</p>
-      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editBasicsModal">
-        Edit Profile
-      </button>
     </div>
   </div>
 
@@ -45,10 +29,7 @@
     <!-- Basics -->
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
-        <h5 class="d-flex justify-content-between align-items-center">
-          Basic Information
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editBasicsModal">Edit</button>
-        </h5>
+        <h5>Basic Information</h5>
         <div class="row g-3 mt-1">
           <div class="col-md-6">
             <label class="form-label">Full Name</label>
@@ -72,7 +53,7 @@
           </div>
           <div class="col-md-4">
             <label class="form-label">Contact Email</label>
-            <input name="contact_email" class="form-control" value="{{ user.contact_email or '' }}">
+            <input name="contact_email" class="form-control" value="{{ user.contact_email or user.email }}">
           </div>
         </div>
       </div>
@@ -81,112 +62,26 @@
     <!-- About -->
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
-        <h5 class="d-flex justify-content-between align-items-center">
-          About / Bio
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editAboutModal">Edit</button>
-        </h5>
+        <h5>About / Bio</h5>
         <textarea name="about" class="form-control" rows="3">{{ user.about or '' }}</textarea>
       </div>
     </div>
 
-    <!-- Skills -->
+    <!-- Resume -->
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
-        <h5 class="d-flex justify-content-between align-items-center">
-          Skills
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editSkillsModal">Edit</button>
-        </h5>
-        <input name="skills" class="form-control" 
-               value="{% for s in user.skills or [] %}{{ s.name }}:{{ s.rating }}{% if not loop.last %},{% endif %}{% endfor %}">
-        <div class="form-text">Ratings 1–5 — e.g. Python:5, React:3</div>
-      </div>
-    </div>
-
-    <!-- Education -->
-    <div class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h5 class="d-flex justify-content-between align-items-center">
-          Education
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editEducationModal">Edit</button>
-        </h5>
-        <div id="educationList">
-          {% for e in user.education or [] %}
-          <div class="education-row mb-2 input-group">
-            <input type="text" class="form-control" name="education[]" value="{{ e.degree }} | {{ e.school }} | {{ e.year }}">
-            <button type="button" class="btn btn-outline-danger btn-remove-edu">Remove</button>
-          </div>
-          {% else %}
-          <div class="education-row mb-2 input-group">
-            <input type="text" class="form-control" name="education[]" placeholder="Degree | School | Year">
-            <button type="button" class="btn btn-outline-danger btn-remove-edu">Remove</button>
-          </div>
-          {% endfor %}
-        </div>
-        <button type="button" id="addEducation" class="btn btn-sm btn-outline-primary mt-2">+ Add Education</button>
-      </div>
-    </div>
-
-    <!-- Experience -->
-    <div class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h5 class="d-flex justify-content-between align-items-center">
-          Experience
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editExperienceModal">Edit</button>
-        </h5>
-        <div id="experienceList">
-          {% for ex in user.experience or [] %}
-          <div class="experience-row mb-2 input-group">
-            <input type="text" class="form-control" name="experience[]" value="{{ ex.role }} | {{ ex.company }} | {{ ex.duration }} | {{ ex.desc }}">
-            <button type="button" class="btn btn-outline-danger btn-remove-exp">Remove</button>
-          </div>
-          {% else %}
-          <div class="experience-row mb-2 input-group">
-            <input type="text" class="form-control" name="experience[]" placeholder="Role | Company | Duration | Description">
-            <button type="button" class="btn btn-outline-danger btn-remove-exp">Remove</button>
-          </div>
-          {% endfor %}
-        </div>
-        <button type="button" id="addExperience" class="btn btn-sm btn-outline-primary mt-2">+ Add Experience</button>
-      </div>
-    </div>
-
-    <!-- Resume & Preferences -->
-    <div class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h5 class="d-flex justify-content-between align-items-center">
-          Resume & Preferences
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editResumeModal">Edit</button>
-        </h5>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Upload Resume</label>
-            <input type="file" name="resume" accept=".pdf,.doc,.docx" class="form-control">
-            {% if user.resume %}
-              <a href="{{ user.resume }}" target="_blank" class="btn btn-sm btn-outline-secondary mt-2">View</a>
-              <a href="{{ url_for('profile.download_resume', username=user.username) }}" class="btn btn-sm btn-primary mt-2">Download</a>
-            {% endif %}
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Job Preferences</label>
-            <input name="pref_role" class="form-control mb-2" placeholder="Desired role" value="{{ user.job_preferences.role if user.job_preferences else '' }}">
-            <input name="pref_salary" class="form-control mb-2" placeholder="Salary expectation" value="{{ user.job_preferences.salary if user.job_preferences else '' }}">
-            <select name="pref_work_type" class="form-select">
-              <option value="remote" {% if user.job_preferences and user.job_preferences.work_type=='remote' %}selected{% endif %}>Remote</option>
-              <option value="hybrid" {% if user.job_preferences and user.job_preferences.work_type=='hybrid' %}selected{% endif %}>Hybrid</option>
-              <option value="onsite" {% if user.job_preferences and user.job_preferences.work_type=='onsite' %}selected{% endif %}>On-site</option>
-            </select>
-          </div>
-        </div>
+        <h5>Resume</h5>
+        <input type="file" name="resume" accept=".pdf,.doc,.docx" class="form-control">
+        {% if user.resume %}
+          <a href="{{ url_for('profile.download_resume', username=user.username) }}" class="btn btn-sm btn-primary mt-2">Download Resume</a>
+        {% endif %}
       </div>
     </div>
 
     <!-- Settings -->
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
-        <h5 class="d-flex justify-content-between align-items-center">
-          Privacy & Settings
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Edit</button>
-        </h5>
+        <h5>Privacy & Settings</h5>
         <div class="row">
           <div class="col-md-4">
             <label class="form-label">Profile Visibility</label>
@@ -210,97 +105,5 @@
       </div>
     </div>
   </form>
-
-  <!-- ================== Sidebars ================== -->
-  <div class="row mt-4">
-    <div class="col-md-6">
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-          <h5>Saved Jobs</h5>
-          <ul id="savedJobsList">
-            {% for j in user.saved_jobs or [] %}<li>{{ j }}</li>{% else %}<li class="text-muted">No saved jobs</li>{% endfor %}
-          </ul>
-        </div>
-      </div>
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-          <h5>Applied Jobs</h5>
-          <ul id="appliedJobsList">
-            {% for j in user.applied_jobs or [] %}<li>{{ j }}</li>{% else %}<li class="text-muted">No applied jobs</li>{% endfor %}
-          </ul>
-        </div>
-      </div>
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-          <h5>Certificates & Badges</h5>
-          <ul>
-            {% for c in user.certificates or [] %}<li>{{ c.name }} ({{ c.year }})</li>{% else %}<li class="text-muted">No certificates yet</li>{% endfor %}
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-          <h5>Career Roadmap Progress</h5>
-          <div class="progress mb-2" style="height:24px;">
-            <div class="progress-bar bg-success" role="progressbar" 
-                 style="width: {{ user.roadmap_progress or 0 }}%;" 
-                 aria-valuenow="{{ user.roadmap_progress or 0 }}" aria-valuemin="0" aria-valuemax="100">
-              {{ user.roadmap_progress or 0 }}%
-            </div>
-          </div>
-          <a href="{{ url_for('career_path.roadmap') }}" class="btn btn-outline-primary btn-sm">Open Roadmaps</a>
-        </div>
-      </div>
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-          <h5>Timeline</h5>
-          <ul>
-            {% for t in user.timeline or [] %}<li>{{ t.year }} — {{ t.event }}</li>{% else %}<li class="text-muted">No events yet</li>{% endfor %}
-          </ul>
-        </div>
-      </div>
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-          <h5>Achievements</h5>
-          <ul>
-            {% for a in user.achievements or [] %}<li>{{ a }}</li>{% else %}<li class="text-muted">No achievements yet</li>{% endfor %}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
-<!-- ================== Include Modals ================== -->
-{% include "profile_modals.html" %}
-
-<script>
-// Education add/remove
-document.getElementById('addEducation').addEventListener('click', () => {
-  const container = document.getElementById('educationList');
-  const div = document.createElement('div');
-  div.className = 'education-row mb-2 input-group';
-  div.innerHTML = `<input type="text" class="form-control" name="education[]" placeholder="Degree | School | Year">
-                   <button type="button" class="btn btn-outline-danger btn-remove-edu">Remove</button>`;
-  container.appendChild(div);
-});
-document.getElementById('educationList').addEventListener('click', e => {
-  if(e.target && e.target.matches('.btn-remove-edu')) e.target.closest('.education-row').remove();
-});
-
-// Experience add/remove
-document.getElementById('addExperience').addEventListener('click', () => {
-  const container = document.getElementById('experienceList');
-  const div = document.createElement('div');
-  div.className = 'experience-row mb-2 input-group';
-  div.innerHTML = `<input type="text" class="form-control" name="experience[]" placeholder="Role | Company | Duration | Description">
-                   <button type="button" class="btn btn-outline-danger btn-remove-exp">Remove</button>`;
-  container.appendChild(div);
-});
-document.getElementById('experienceList').addEventListener('click', e => {
-  if(e.target && e.target.matches('.btn-remove-exp')) e.target.closest('.experience-row').remove();
-});
-</script>
 {% endblock %}

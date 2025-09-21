@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="resume-preview" style="max-width:800px; margin:30px auto; padding:20px; background:#fff; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.1);">
+
+    <!-- Profile Photo -->
+    {% if resume.photo_path %}
+    <div style="text-align:center; margin-bottom:20px;">
+        <img src="{{ url_for('static', filename='uploads/' + resume.photo_path.split('/')[-1]) }}" alt="Profile Photo" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:2px solid #2563eb;">
+    </div>
+    {% endif %}
+
+    <!-- Name & Role -->
+    <h1 style="text-align:center;">{{ resume.name }}</h1>
+    <h3 style="text-align:center; color:#1e40af;">{{ resume.role }}</h3>
+
+    <!-- Contact Info -->
+    <p><b>Email:</b> {{ resume.email }} | <b>Phone:</b> {{ resume.phone }}</p>
+    {% if resume.address %}
+    <p><b>Address:</b> {{ resume.address }}</p>
+    {% endif %}
+
+    <!-- Profile -->
+    {% if resume.objective %}
+    <h2>Profile</h2>
+    <p>{{ resume.objective }}</p>
+    {% endif %}
+
+    <!-- Education -->
+    {% if resume.education %}
+    <h2>Education</h2>
+    <p>{{ resume.education }}</p>
+    {% endif %}
+
+    <!-- Skills -->
+    {% if resume.skills %}
+    <h2>Skills</h2>
+    <p>{{ resume.skills }}</p>
+    {% endif %}
+
+    <!-- Certifications -->
+    {% if resume.certifications %}
+    <h2>Certifications</h2>
+    <p>{{ resume.certifications }}</p>
+    {% endif %}
+
+    <!-- Work Experience -->
+    {% if resume.experience %}
+    <h2>Experience</h2>
+    <p>{{ resume.experience }}</p>
+    {% endif %}
+
+    <!-- Projects -->
+    {% if resume.projects %}
+    <h2>Projects</h2>
+    <p>{{ resume.projects }}</p>
+    {% endif %}
+
+    <!-- Achievements -->
+    {% if resume.achievements %}
+    <h2>Achievements</h2>
+    <p>{{ resume.achievements }}</p>
+    {% endif %}
+
+    <!-- Languages -->
+    {% if resume.languages %}
+    <h2>Languages</h2>
+    <p>{{ resume.languages }}</p>
+    {% endif %}
+
+    <!-- Hobbies -->
+    {% if resume.hobbies %}
+    <h2>Hobbies</h2>
+    <p>{{ resume.hobbies }}</p>
+    {% endif %}
+
+    <!-- Portfolio -->
+    {% if resume.portfolio %}
+    <h2>Portfolio</h2>
+    <p>{{ resume.portfolio }}</p>
+    {% endif %}
+
+    <!-- References -->
+    {% if resume.references %}
+    <h2>References</h2>
+    <p>{{ resume.references }}</p>
+    {% endif %}
+
+    <hr>
+    <p><b>ATS Score:</b> {{ score }}</p>
+    <p><b>ATS Feedback:</b> {{ ats_feedback }}</p>
+
+    <form method="POST" action="{{ url_for('resume.resume') }}">
+        {% for key, value in resume.items() %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+        <button type="submit" name="export_pdf" class="btn">⬇ Download as PDF</button>
+        <button type="submit" name="export_docx" class="btn">⬇ Download as DOCX</button>
+    </form>
+
+    <a href="{{ url_for('resume.resume') }}" class="btn">🔙 Back to Edit</a>
+</div>
+
+<!-- STYLES -->
+<style>
+.resume-preview h2 {
+    margin-top: 20px;
+    color: #1e3a8a;
+    border-bottom: 2px solid #1e40af;
+    padding-bottom: 5px;
+}
+.resume-preview p {
+    margin: 5px 0 10px 0;
+    line-height: 1.5;
+}
+.btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 6px;
+    margin: 10px 5px 0 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn:hover { background: #1e40af; }
+</style>
+
+{% endblock %}

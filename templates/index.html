@@ -1,5 +1,22 @@
-{% extends "base.html" %}
-{% block content %}
-<h2>Home Page</h2>
-<p>Welcome to Career Platform!</p>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Builder</title>
+</head>
+<body>
+    <h1>Resume Builder</h1>
+    <form method="POST" action="/generate">
+        <input type="text" name="name" placeholder="Your Name" required><br>
+        <input type="text" name="role" placeholder="Your Role" required><br>
+        <input type="email" name="email" placeholder="Email"><br>
+        <input type="text" name="phone" placeholder="Phone"><br>
+        <input type="text" name="address" placeholder="Address"><br>
+        <textarea name="education" placeholder="Education"></textarea><br>
+        <textarea name="skills" placeholder="Skills"></textarea><br>
+        <textarea name="languages" placeholder="Languages"></textarea><br>
+        <textarea name="experience" placeholder="Experience"></textarea><br>
+        <button type="submit">Generate Resume</button>
+    </form>
+</body>
+</html>
